@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Auth Service - handles authentication
+  auth-service:
+    image: auth-service:latest
+    container_name: auth-service
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - spong-network
+    restart: unless-stopped
+
+  # Customer Service - manages customer data
+  customer-service:
+    image: customer-service:latest
+    container_name: customer-service
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - spong-network
+    restart: unless-stopped
+
+  # Spong ML - machine learning service
+  spong-ml:
+    image: spong-ml:latest
+    container_name: spong-ml
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - spong-network
+    restart: unless-stopped
+
+  # Main Spong Application
+  spong:
+    image: spong:latest
+    container_name: spong
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - spong-network
+    restart: unless-stopped
+
+networks:
+  spong-network:
+    driver: bridge

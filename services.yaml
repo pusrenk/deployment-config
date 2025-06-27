@@ -1,0 +1,11 @@
+auth-service:
+  image: auth-service:latest
+  
+customer-service:
+  image: customer-service:latest
+
+spong-ml:
+  image: spong-ml:latest
+
+spong:
+  image: spong:latest
