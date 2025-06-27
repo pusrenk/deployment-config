@@ -3,52 +3,60 @@ version: '3.8'
 services:
   # Auth Service - handles authentication
   auth-service:
-    image: auth-service:latest
-    container_name: auth-service
+    image: ${DOCKER_HUB_USER}/auth-service:${IMAGE_TAG}
+    container_name: auth-service-${IMAGE_TAG}
+    pull_policy: always
     ports:
       - "3001:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${IMAGE_TAG}
+      - ENVIRONMENT=${IMAGE_TAG}
     networks:
-      - spong-network
+      - spong-network-${IMAGE_TAG}
     restart: unless-stopped
 
   # Customer Service - manages customer data
   customer-service:
-    image: customer-service:latest
-    container_name: customer-service
+    image: ${DOCKER_HUB_USER}/customer-service:${IMAGE_TAG}
+    container_name: customer-service-${IMAGE_TAG}
+    pull_policy: always
     ports:
       - "3002:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${IMAGE_TAG}
+      - ENVIRONMENT=${IMAGE_TAG}
     networks:
-      - spong-network
+      - spong-network-${IMAGE_TAG}
     restart: unless-stopped
 
   # Spong ML - machine learning service
   spong-ml:
-    image: spong-ml:latest
-    container_name: spong-ml
+    image: ${DOCKER_HUB_USER}/spong-ml:${IMAGE_TAG}
+    container_name: spong-ml-${IMAGE_TAG}
+    pull_policy: always
     ports:
       - "8000:8000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${IMAGE_TAG}
+      - ENVIRONMENT=${IMAGE_TAG}
     networks:
-      - spong-network
+      - spong-network-${IMAGE_TAG}
     restart: unless-stopped
 
   # Main Spong Application
   spong:
-    image: spong:latest
-    container_name: spong
+    image: ${DOCKER_HUB_USER}/spong:${IMAGE_TAG}
+    container_name: spong-${IMAGE_TAG}
+    pull_policy: always
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${IMAGE_TAG}
+      - ENVIRONMENT=${IMAGE_TAG}
     networks:
-      - spong-network
+      - spong-network-${IMAGE_TAG}
     restart: unless-stopped
 
 networks:
-  spong-network:
+  spong-network-${IMAGE_TAG}:
     driver: bridge
